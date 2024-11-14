@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+@import url('components/startScreen/Style.css');
+@import url('components/game/Style.css');
+@import url('components/gameOver/Style.css');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+
+:root{
+    --font: "Poppins", serif;
+    --cor-fundo: 180deg, #237353 0%, #1E6247 20%, #134630 50%, #0A2A1A 75%, #030e09 100%;
+    --cor-primaria: #31a174;
+    --cor-texto-enfase: #ecfa00;
+    --cor-foco: #0A2A1A;
+    --cor-texto: #f1f1f1;
+    
+}
+html, body{
+    height: 100vh;
+}
+
+
+body{
+    font-size: 8px;
+    font-weight: 400;
+    font-family: var(--font);
+    background: linear-gradient(var(--cor-fundo));
+    color: var(--cor-texto) ;
+
+}
+
+button {
+    background-color: var(--cor-primaria);
+    color: var(--cor-texto);
+    padding: 0 45px;
+    border: solid 2px var(--cor-texto);
+    border-radius: 25px;
+    height: 50px;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: .4s;
+}
+button:hover{
+    background-color: var(--cor-foco);
+}
