@@ -22,30 +22,29 @@ function App() {
   const [pickedWord, setPickedWord] = useState('');
   const [pickedCategory, setPickedCategory] = useState('');
   const [latters, setLatters] = useState([]);
-  
+  const guessesQtd = 3
 
   const [guessedLatters, setGuessedLatters] = useState([]);
   const [wrongLatters, setWrongLatters] = useState([]);
-  const [guesses, setGuesses] = useState(3);
+  const [guesses, setGuesses] = useState(guessesQtd);
   const [score, setScore] = useState(0);
-  console.log(wrongLatters)
-  const pickedWordAndCategory = () => {
+  const pickedWordAndCategory = useCallback(() => {
     const categories = Object.keys(wordList)
     const randomCategory = categories[Math.floor(Math.random() * categories.length)]
 
     const randomWord = wordList[randomCategory][Math.floor(Math.random() * wordList[randomCategory].length)]
     return { randomCategory, randomWord };
-  }
+  }, [wordList])
 
+  const startGame = useCallback(() => {
+    clearStates()
 
-  const startGame = () => {
     const { randomCategory, randomWord } = pickedWordAndCategory();
-
-
+    
     let wordLatter = randomWord.split("")
     wordLatter = wordLatter.map((l) => l.toLowerCase())
-   
-
+    
+    
     setPickedCategory(randomCategory);
     setPickedWord(randomWord);
     setLatters(wordLatter);
@@ -53,9 +52,33 @@ function App() {
 
 
 
-    setGameStage(stage[1].name)
-  }
 
+    setGameStage(stage[1].name)
+  },[pickedWordAndCategory])
+  
+  const clearStates = () =>{
+    setGuessedLatters([])
+    setWrongLatters([])
+    
+    
+  }
+  
+
+  useEffect(()=>{
+    const uniqueLetter = [...new Set(latters)]
+    if(guessedLatters.length === uniqueLetter.length){
+      setScore((actualScore) => actualScore += 100)
+      startGame()
+    }
+    
+  },[guessedLatters, latters, startGame])
+  //Check gameover
+  useEffect(()=>{
+    if(guesses <= 0){
+      gameOver()
+      clearStates()
+    }
+  }, [guesses])
   const verifyLetter = (letter) =>{
     const normalizeLetter = letter.toLowerCase();
     if(guessedLatters.includes(letter) || wrongLatters.includes(letter)){
@@ -68,12 +91,13 @@ function App() {
         normalizeLetter
         
       ])
-      console.log(`Normalize: ${normalizeLetter}`)
     }else{
       setWrongLatters((actualWrongLetters)=>[
         ...actualWrongLetters,
         normalizeLetter
       ])
+
+      setGuesses(()=> guesses -1)
     }
   }
   
@@ -83,6 +107,7 @@ function App() {
   }
 
   const retry = () => {
+    setGuesses(guessesQtd)
     setGameStage(stage[0].name)
   }
 
@@ -102,7 +127,7 @@ function App() {
         verifyLetter={verifyLetter}
       />
       )}
-      {gameStage == 'end' && <GameOver retry={retry} />}
+      {gameStage == 'end' && <GameOver retry={retry} score={score} />}
 
     </div>
   )
