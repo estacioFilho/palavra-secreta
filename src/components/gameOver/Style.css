@@ -6,3 +6,14 @@
     margin-bottom: 2em;
     color: #ecfa00;
 }
+.retry h2{
+    margin: 1em 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+}
+.retry h2 span{
+    color: #ecfa00;
+    font-size: 1.5em;
+}
